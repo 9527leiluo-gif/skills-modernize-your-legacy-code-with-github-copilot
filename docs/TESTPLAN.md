@@ -1,18 +1,18 @@
-# COBOL 应用测试计划
+# COBOL Application Test Plan
 
-> 说明：以下测试计划覆盖当前 COBOL 应用程序的全部业务逻辑，用于与业务利益相关者进行验证，并可作为后续 Node.js 单元/集成测试的依据。
+> Purpose: Validate current COBOL business logic with stakeholders and serve as a basis for Node.js unit/integration tests during modernization.
 
-| 测试用例ID | 测试用例描述 | 前提条件 | 测试步骤 | 预期结果 | 实际结果 | 状态（通过/失败） | 评论 |
+| Test Case ID | Test Case Description | Pre-conditions | Test Steps | Expected Result | Actual Result | Status (Pass/Fail) | Comments |
 |---|---|---|---|---|---|---|---|
-| TC-001 | 查看余额（初始值） | 启动应用；无历史操作 | 1. 选择菜单 1（View Balance） | 显示当前余额为 1000.00 |  |  |  |
-| TC-002 | 入账成功（金额有效） | 启动应用 | 1. 选择菜单 2（Credit Account）<br>2. 输入入账金额 100.00 | 显示“Amount credited. New balance: 1100.00” |  |  |  |
-| TC-003 | 出账成功（余额充足） | 启动应用 | 1. 选择菜单 3（Debit Account）<br>2. 输入出账金额 200.00 | 显示“Amount debited. New balance: 800.00” |  |  |  |
-| TC-004 | 出账失败（余额不足） | 启动应用 | 1. 选择菜单 3（Debit Account）<br>2. 输入出账金额 2000.00 | 显示“Insufficient funds for this debit.”；余额保持不变 |  |  |  |
-| TC-005 | 入账后余额可被查询 | 启动应用 | 1. 选择菜单 2（Credit Account）并输入 50.00<br>2. 选择菜单 1（View Balance） | 余额为 1050.00 |  |  |  |
-| TC-006 | 出账后余额可被查询 | 启动应用 | 1. 选择菜单 3（Debit Account）并输入 50.00<br>2. 选择菜单 1（View Balance） | 余额为 950.00 |  |  |  |
-| TC-007 | 连续操作后的余额计算正确 | 启动应用 | 1. 入账 100.00<br>2. 出账 40.00<br>3. 查询余额 | 余额为 1060.00 |  |  |  |
-| TC-008 | 非法菜单输入处理 | 启动应用 | 1. 输入菜单选项 9 | 显示“Invalid choice, please select 1-4.”并继续显示菜单 |  |  |  |
-| TC-009 | 退出程序 | 启动应用 | 1. 输入菜单选项 4 | 显示“Exiting the program. Goodbye!”并结束程序 |  |  |  |
-| TC-010 | 余额在一次运行内保持一致 | 启动应用 | 1. 查询余额（1000.00）<br>2. 入账 25.00<br>3. 查询余额 | 第二次查询显示 1025.00 |  |  |  |
-| TC-011 | 数据层读写流程（读取） | 启动应用 | 1. 查询余额（菜单 1） | `Operations` 调用 `DataProgram` 的 READ；显示余额 |  |  |  |
-| TC-012 | 数据层读写流程（写入） | 启动应用 | 1. 入账 10.00（菜单 2） | `Operations` 调用 `DataProgram` 的 WRITE；显示新余额 1010.00 |  |  |  |
+| TC-001 | View balance (initial value) | Application started; no prior operations | 1. Select menu option 1 (View Balance) | Displays current balance as 1000.00 |  |  |  |
+| TC-002 | Credit succeeds (valid amount) | Application started | 1. Select menu option 2 (Credit Account)<br>2. Enter credit amount 100.00 | Displays “Amount credited. New balance: 1100.00” |  |  |  |
+| TC-003 | Debit succeeds (sufficient balance) | Application started | 1. Select menu option 3 (Debit Account)<br>2. Enter debit amount 200.00 | Displays “Amount debited. New balance: 800.00” |  |  |  |
+| TC-004 | Debit fails (insufficient funds) | Application started | 1. Select menu option 3 (Debit Account)<br>2. Enter debit amount 2000.00 | Displays “Insufficient funds for this debit.”; balance remains unchanged |  |  |  |
+| TC-005 | Balance reflects credit | Application started | 1. Credit 50.00 (menu option 2)<br>2. View Balance (menu option 1) | Balance displays 1050.00 |  |  |  |
+| TC-006 | Balance reflects debit | Application started | 1. Debit 50.00 (menu option 3)<br>2. View Balance (menu option 1) | Balance displays 950.00 |  |  |  |
+| TC-007 | Multiple operations compute correctly | Application started | 1. Credit 100.00<br>2. Debit 40.00<br>3. View Balance | Balance displays 1060.00 |  |  |  |
+| TC-008 | Invalid menu input is handled | Application started | 1. Enter menu option 9 | Displays “Invalid choice, please select 1-4.” and re-prompts |  |  |  |
+| TC-009 | Exit program | Application started | 1. Enter menu option 4 | Displays “Exiting the program. Goodbye!” and terminates |  |  |  |
+| TC-010 | Balance persists within session | Application started | 1. View Balance (1000.00)<br>2. Credit 25.00<br>3. View Balance | Second view displays 1025.00 |  |  |  |
+| TC-011 | Data layer read path | Application started | 1. View Balance (menu option 1) | `Operations` calls `DataProgram` with READ and displays balance |  |  |  |
+| TC-012 | Data layer write path | Application started | 1. Credit 10.00 (menu option 2) | `Operations` calls `DataProgram` with WRITE and displays 1010.00 |  |  |  |
