@@ -37,3 +37,41 @@
 **学生账户业务规则**：
 - 余额在程序内存中维护，初始值为 1000.00。
 - 只支持 `READ` 与 `WRITE` 两种操作类型。
+
+## 应用程序数据流序列图
+
+```mermaid
+sequenceDiagram
+	participant User as 用户
+	participant Main as MainProgram
+	participant Ops as Operations
+	participant Data as DataProgram
+
+	User->>Main: 选择菜单操作(1-4)
+	alt 查询余额(TOTAL)
+		Main->>Ops: CALL Operations("TOTAL ")
+		Ops->>Data: CALL DataProgram("READ", balance)
+		Data-->>Ops: 返回余额
+		Ops-->>Main: 显示余额
+	else 入账(CREDIT)
+		Main->>Ops: CALL Operations("CREDIT")
+		Ops->>Data: CALL DataProgram("READ", balance)
+		Data-->>Ops: 返回余额
+		Ops->>Data: CALL DataProgram("WRITE", newBalance)
+		Data-->>Ops: 写回余额
+		Ops-->>Main: 显示新余额
+	else 出账(DEBIT)
+		Main->>Ops: CALL Operations("DEBIT ")
+		Ops->>Data: CALL DataProgram("READ", balance)
+		Data-->>Ops: 返回余额
+		alt 余额足够
+			Ops->>Data: CALL DataProgram("WRITE", newBalance)
+			Data-->>Ops: 写回余额
+			Ops-->>Main: 显示新余额
+		else 余额不足
+			Ops-->>Main: 提示余额不足
+		end
+	else 退出
+		Main-->>User: 结束程序
+	end
+```
